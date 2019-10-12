@@ -36,6 +36,7 @@ class AccountBookActivity : BaseMvpActivity<AccountBookActivityPresenter>() {
         tableList.add(tableBeanD)
         mViewPager.adapter = AccountingAdapter(supportFragmentManager, tableList, this)
         mTable.setSelectedTabIndicatorColor(Color.GREEN)
+        mTable.setupWithViewPager()
 
 
 
