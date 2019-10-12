@@ -2,7 +2,9 @@ package com.wangyang.account.ui
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangyang.account.R
 import com.wangyang.account.adapter.AccountingAdapter
@@ -30,9 +32,9 @@ class AccountBookActivity : BaseMvpActivity<AccountBookActivityPresenter>() {
 
     init {
         val tableBeanA = TabBean().setFragment(AccountingFragment.newInstance(1)).setTitle("支出")
-        val tableBeanB = TabBean().setFragment(AccountingFragment.newInstance(2)).setTitle("支出")
-        val tableBeanC = TabBean().setFragment(AccountingFragment.newInstance(3)).setTitle("支出")
-        val tableBeanD = TabBean().setFragment(AccountingFragment.newInstance(4)).setTitle("支出")
+        val tableBeanB = TabBean().setFragment(AccountingFragment.newInstance(2)).setTitle("收入")
+        val tableBeanC = TabBean().setFragment(AccountingFragment.newInstance(3)).setTitle("转账")
+        val tableBeanD = TabBean().setFragment(AccountingFragment.newInstance(4)).setTitle("借贷")
         tableList.add(tableBeanA)
         tableList.add(tableBeanB)
         tableList.add(tableBeanC)
@@ -45,22 +47,20 @@ class AccountBookActivity : BaseMvpActivity<AccountBookActivityPresenter>() {
             override fun getTitleView(context: Context?, index: Int): IPagerTitleView {
                 val simplePagerTitleView = SimplePagerTitleView(context)
                 simplePagerTitleView.text = tableList[index].title
-                simplePagerTitleView.textSize = 18f
-                simplePagerTitleView.normalColor = Color.GRAY
-                simplePagerTitleView.selectedColor = Color.BLACK
+                simplePagerTitleView.textSize = 16f
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    simplePagerTitleView.normalColor = getColor(R.color.common_bg)
+                }else{
+                    simplePagerTitleView.normalColor = ContextCompat.getColor(context!!,R.color.common_bg)
+                }
+                simplePagerTitleView.selectedColor = Color.WHITE
                 simplePagerTitleView.setOnClickListener { mViewPager.currentItem = index }
                 return simplePagerTitleView
             }
 
             override fun getIndicator(context: Context?): IPagerIndicator {
                 val indicator = BezierPagerIndicator(context)
-                indicator.setColors(
-                    Color.parseColor("#ff4a42"),
-                    Color.parseColor("#fcde64"),
-                    Color.parseColor("#73e8f4"),
-                    Color.parseColor("#76b0ff"),
-                    Color.parseColor("#c683fe")
-                )
+                indicator.setColors(Color.parseColor("#ffffff"))
                 return indicator
             }
         }
@@ -74,7 +74,6 @@ class AccountBookActivity : BaseMvpActivity<AccountBookActivityPresenter>() {
 
     private fun initView() {
         mViewPager.adapter = AccountingAdapter(supportFragmentManager, tableList, this)
-        mMagicIndicator.setBackgroundColor(Color.WHITE)
         val commonNavigator = CommonNavigator(this)
         commonNavigator.adapter = commonNavigatorAdapter
         commonNavigator.isAdjustMode = true

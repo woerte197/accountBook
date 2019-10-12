@@ -3,22 +3,25 @@ package com.wangyang.account.ui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.wangyang.account.R
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+import com.wangyang.account.adapter.MyGridAdapter
+import com.wangyang.account.ui.presenter.AccountingFragmentPresenter
+import com.wangyang.baselibrary.ui.fragment.BaseMvpFragment
+import kotlinx.android.synthetic.main.fragment_accounting.*
 
 /**
  * A simple [Fragment] subclass.
  *
  */
-class AccountingFragment : Fragment() {
+class AccountingFragment : BaseMvpFragment<AccountingFragmentPresenter>() {
+    override fun setLayout(): Int {
+        return R.layout.fragment_accounting
+    }
+
+    private var mAccountType: Int? = 0
 
     companion object {
-        const val ACCOUNTING_TYPE = "ACCOUNTING_TYPE"
+        private const val ACCOUNTING_TYPE = "ACCOUNTING_TYPE"
         fun newInstance(type: Int): Fragment {
             val arg = Bundle()
             arg.putSerializable(ACCOUNTING_TYPE, type)
@@ -29,13 +32,29 @@ class AccountingFragment : Fragment() {
     }
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_accounting, container, false)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        initData()
+        initView()
     }
 
+    private fun initView() {
+        var list = mutableListOf("你好", "你好", "你好", "你好", "你好", "你好")
+        mGridView.adapter = MyGridAdapter(context!!, list)
+    }
+
+    private fun initData() {
+        mAccountType = arguments?.getSerializable(ACCOUNTING_TYPE) as Int
+        when (mAccountType) {
+            0 -> {
+            }
+            1 -> {
+            }
+            2 -> {
+            }
+            3 -> {
+            }
+        }
+    }
 
 }
